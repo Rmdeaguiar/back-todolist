@@ -45,6 +45,7 @@ const newTask = async (req, res) => {
             return res.status(404).json('A tarefa não foi cadastrada');
         }
 
+
         return res.status(201).json('Tarefa cadastrada com sucesso!');
 
     } catch (error) {
@@ -68,12 +69,6 @@ const taskDone = async (req, res) => {
 
         if (!task) {
             return res.status(400).json('Não foi possível deletar a tarefa concluída')
-        }
-
-        const deleteTask = await knex('todo').where('id', idTask).del('*');
-
-        if (!deleteTask) {
-            return res.status(400).json('Não foi possível excluir a tarefa')
         }
 
         return res.status(201).json('Tarefa concluída com sucesso!');
@@ -102,6 +97,7 @@ const editTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
     const { id } = req.params;
+    const { user } = req
 
     try {
         const task = await knex('todo').where({ id }).first();
@@ -116,7 +112,10 @@ const deleteTask = async (req, res) => {
             return res.status(400).json('Não foi possível excluir a tarefa')
         }
 
-        return res.status(200).json('Tarefa excluída com sucesso')
+        const allTasks = await knex('todo').where('user_id', user.id)
+
+
+        return res.status(200).json(allTasks)
 
     } catch (error) {
         return res.status(400).json(error.message)
@@ -125,6 +124,7 @@ const deleteTask = async (req, res) => {
 
 const deleteTaskDone = async (req, res) => {
     const { id } = req.params;
+    const { user } = req
 
     try {
         const task = await knex('done').where({ id });
@@ -139,7 +139,9 @@ const deleteTaskDone = async (req, res) => {
             return res.status(400).json('Não foi possível excluir a tarefa')
         }
 
-        return res.status(200).json('Tarefa excluída com sucesso')
+        const allTasks = await knex('done').where('user_id', user.id)
+
+        return res.status(200).json(allTasks)
 
     } catch (error) {
         return res.status(400).json(error.message)
