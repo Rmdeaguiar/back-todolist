@@ -17,3 +17,13 @@ CREATE TABLE todo (
 	date timestamp DEFAULT NOW(),	
     user_id int NOT NULL REFERENCES users(id) 
 )
+
+DROP TABLE IF EXISTS done 
+
+CREATE TABLE done (
+  	id serial PRIMARY KEY, 
+  	description text NOT NULL,
+	date timestamp DEFAULT NOW(),	
+    user_id int NOT NULL REFERENCES users(id) 
+)
+
