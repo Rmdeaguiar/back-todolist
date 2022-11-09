@@ -1,1 +1,1 @@
-module.exports = process.env.SECRET
+module.exports = 'secret'
